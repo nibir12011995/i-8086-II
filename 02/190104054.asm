@@ -1,0 +1,48 @@
+SSEG SEGMENT STACK 'STACK'
+     DW 50 DUP(?)
+SSEG ENDS
+
+DSEG SEGMENT 'DATA'
+LEDs DB 00000100b, 00001100b, 00001110b, 00000100b
+DSEG ENDS
+
+CSEG SEGMENT 'CODE'
+MAIN PROC FAR
+
+    PUSH DS
+    MOV AX, 0
+    PUSH AX
+
+    MOV AX, DSEG
+    MOV DS, AX
+    MOV ES, AX
+
+	MOV DX, 2070h	
+	XOR SI, SI
+	
+	MOV BX, 4
+
+NEXT:
+ 
+	MOV AL,LEDs[SI]
+	OUT DX,AL   
+	 
+    ;for delay 
+	 
+	MOV CX, 01FFH
+    LO: 
+    LOOP LO
+ 
+	 
+	INC SI 
+    
+    DEC BX
+    CMP BX, 0
+    JG NEXT 
+    	
+
+RET
+MAIN ENDP
+CSEG ENDS 
+END MAIN  
+
